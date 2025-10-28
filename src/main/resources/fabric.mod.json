@@ -1,37 +1,33 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "jac",
 	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "JAC",
+	"description": "Just another client",
 	"authors": [
-		"Me!"
+		"CDN0"
 	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"license": "GPL-3.0",
+	"icon": "assets/jac/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"xyz.soydev.Jac"
 		],
 		"client": [
-			"com.example.ExampleModClient"
+			"xyz.soydev.JacClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"jac.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "jac.client.mixins.json",
 			"environment": "client"
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.17.2",
-		"minecraft": "~1.21.10",
+		"fabricloader": ">=0.14.6",
+		"minecraft": "~1.18.2",
 		"java": ">=21",
 		"fabric-api": "*"
 	},
