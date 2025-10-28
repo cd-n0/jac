@@ -3,7 +3,8 @@
 	"package": "xyz.soydev.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"MinecraftClientMixin"
+		"MinecraftClientMixin",
+		"GameMenuScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
