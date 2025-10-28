@@ -5,8 +5,9 @@ build/
 out/
 classes/
 
-# eclipse
+# eclipse/jdtls
 
+.factorypath
 *.launch
 
 # idea
