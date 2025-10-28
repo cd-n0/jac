@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.client.gui.screen.Screen;
 import xyz.soydev.JacOptionsScreen;
 
@@ -22,15 +21,12 @@ public abstract class GameMenuScreenMixin extends Screen {
     @Inject(at = @At("TAIL"), method = "initWidgets()V")
     private void additionalButtons(CallbackInfo ci) {
         this.addDrawableChild(
-                new ButtonWidget(
-                    0,
-                    0,
-                    98,
-                    20,
-                    new TranslatableText("menu." + xyz.soydev.Jac.MOD_ID),
-                    button -> this.client.setScreen(new JacOptionsScreen(this, this.client.options))
-                    )
+                ButtonWidget.builder(
+                    Text.translatable("menu." + xyz.soydev.Jac.MOD_ID),
+                    button -> {
+                        this.client.setScreen(new JacOptionsScreen(this, this.client.options));
+                    }
+                    ).dimensions(0, 0, 98, 20).build()
                 );
-
     }
 }
