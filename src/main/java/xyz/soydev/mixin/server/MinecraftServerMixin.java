@@ -1,4 +1,4 @@
-package xyz.soydev.mixin;
+package xyz.soydev.mixin.server;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;

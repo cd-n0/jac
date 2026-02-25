@@ -1,0 +1,14 @@
+{
+    "jac.menu": "JAC Menu",
+    "jac.feature.fly": "Fly",
+    "jac.feature.fly.option.flyspeed": "Fly Speed",
+    "jac.feature.fly.option.flyantikicktickfrequency": "Fly anti kick tick frequency",
+    "jac.key.fly.toggle": "Toggle Fly",
+    "jac.feature.speed": "Speed",
+    "jac.feature.autofish": "Automatic fishing",
+    "jac.feature.nofall": "No Fall",
+    "jac.key.nofall.toggle": "Toggle No Fall",
+    "jac.key.fly.nofall": "Toggle NoFall",
+    "jac.feature.togglemessage": "Toggled feature",
+    "jac.category.movement": "JAC Movement"
+}

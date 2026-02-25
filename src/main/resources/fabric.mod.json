@@ -19,17 +19,15 @@
 		]
 	},
 	"mixins": [
-		"jac.mixins.json",
-		{
-			"config": "jac.client.mixins.json",
-			"environment": "client"
-		}
+		"jac.mixins.json"
 	],
+	"accessWidener": "jac.classtweaker",
 	"depends": {
 		"fabricloader": ">=0.14.6",
 		"minecraft": "~${minecraft_version}",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"fabric-key-binding-api-v1": "*"
 	},
 	"suggests": {
 		"another-mod": "*"

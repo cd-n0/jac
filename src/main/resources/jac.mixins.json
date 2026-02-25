@@ -2,13 +2,19 @@
 	"required": true,
 	"package": "xyz.soydev.mixin",
 	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"client.MinecraftClientMixin",
+		"client.gui.screen.GameMenuScreenMixin",
+		"client.util.WindowMixin"
+	],
 	"mixins": [
-		"MinecraftServerMixin"
+		"entity.EntityMixin",
+		"entity.projectile.FishingBobberEntityAccessor"
+	],
+	"server": [
+		"server.MinecraftServerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
 	}
 }
