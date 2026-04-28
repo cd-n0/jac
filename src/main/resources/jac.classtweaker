@@ -1,5 +1,0 @@
-classTweaker v1 named
-
-# Auto Fish
-accessible class net/minecraft/entity/projectile/FishingBobberEntity$State
-accessible field net/minecraft/entity/projectile/FishingBobberEntity state Lnet/minecraft/entity/projectile/FishingBobberEntity$State;
