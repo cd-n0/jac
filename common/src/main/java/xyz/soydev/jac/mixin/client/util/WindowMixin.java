@@ -6,11 +6,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.soydev.jac.events.FrameEvent;
+import xyz.soydev.jac.events.JacEventBus;
 
 @Mixin(Window.class)
 public class WindowMixin {
     @Inject(at = @At("TAIL"), method = "updateDisplay")
     void onFrame(CallbackInfo ci) {
-        FrameEvent.onFrame();
+        JacEventBus.get().post(new FrameEvent());
     }
 }

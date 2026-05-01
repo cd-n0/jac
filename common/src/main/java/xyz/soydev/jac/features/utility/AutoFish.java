@@ -4,16 +4,18 @@ import static xyz.soydev.jac.JacClient.instance;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Items;
+import xyz.soydev.jac.events.JacSubscribe;
+import xyz.soydev.jac.events.TickEvent;
 import xyz.soydev.jac.mixin.entity.projectile.FishingBobberEntityAccessor;
 
 public class AutoFish extends UtilityFeature {
     private boolean wasCaught;
     public AutoFish() {
-        super(AutoFish.class.getSimpleName().toLowerCase());
+        super(AutoFish.class.getSimpleName().toLowerCase(), true);
     }
 
-    @Override
-    protected void onTick() {
+    @JacSubscribe
+    protected void onTick(TickEvent e) {
         if (instance.player == null) return;
         if (wasCaught) {
             castRod();

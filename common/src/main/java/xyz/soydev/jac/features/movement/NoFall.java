@@ -7,15 +7,17 @@ import static xyz.soydev.jac.JacClient.instance;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.world.phys.Vec3;
+import xyz.soydev.jac.events.JacSubscribe;
+import xyz.soydev.jac.events.TickEvent;
 
 public class NoFall extends MovementFeature {
     public NoFall() {
-        super(NoFall.class.getSimpleName().toLowerCase());
+        super(NoFall.class.getSimpleName().toLowerCase(), true);
         addToggleKeyBinding(GLFW.GLFW_KEY_PAGE_DOWN);
     }
 
-    @Override
-    protected void onTick() {
+    @JacSubscribe
+    protected void onTick(TickEvent e) {
         final LocalPlayer player = instance.player;
         if (player == null) return;
 

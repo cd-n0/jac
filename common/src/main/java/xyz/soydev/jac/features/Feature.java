@@ -7,6 +7,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import xyz.soydev.jac.events.JacEventBus;
+import xyz.soydev.jac.keymap.JacKeyMapping;
+import xyz.soydev.jac.keymap.JacKeyMappingCallback;
 
 public abstract class Feature {
     private static final String FEATURE_PREFIX = "jac.feature.";
@@ -14,16 +17,27 @@ public abstract class Feature {
 
     private final String name;
     private final String category;
-    private final List<JacKeyBinding> keyBindings = new ArrayList<>();
-    private final OptionInstance<Boolean> enabled;
+    private final List<JacKeyMapping> keyBindings = new ArrayList<>();
+    private boolean enabled = false;
+    private final OptionInstance<Boolean> enabledOption;
     private final List<OptionInstance<?>> options = new ArrayList<>();
-    public Feature(String name, String category) {
+    public Feature(String name, String category, boolean enabled) {
         this.name = name;
         this.category = category;
-        enabled = addBoolOption("enabled", false);
+        this.enabled = enabled;
+        enabledOption = addBoolOption("enabled", enabled);
+        if (enabled) JacEventBus.get().register(this);
     }
+
     public void toggle() {
-        enabled.set(!enabled.get());
+        // FIXME: Only bindings register/unregister
+        //  somehow watch changes on the enabledOption to do it as well
+        // TODO: Also options being here is so stupid just remove them from this class
+        if (enabled) {
+            disable();
+        } else {
+            enable();
+        }
         message(Component.translatable("jac.feature.togglemessage").getString() + (isEnabled() ? " on" : " off"));
     }
     protected void message(String message) {
@@ -33,33 +47,40 @@ public abstract class Feature {
         message = isEnabled() ? ("§a" + message.replace("§r", "§a")) : ("§c" + message.replace("§r", "§c"));
         player.displayClientMessage(Component.nullToEmpty("[JAC] " + name + ": " + message), true);
     }
-    /* Runs every tick */
-    protected abstract void onTick();
-    /* Runs every frame */
-    protected abstract void onFrame();
-    public boolean isEnabled() {
-        return enabled.get();
+
+    public void enable() {
+        if (enabled) return;
+        enabled = true;
+        enabledOption.set(true);
+        JacEventBus.get().register(this);
     }
 
-    protected KeyMapping addKeyBinding(String keySuffix, int glfwKey, Runnable callback) {
-        JacKeyBinding keyBinding = new JacKeyBinding("jac.key." + name + keySuffix, glfwKey, CATEGORY_PREFIX + category);
+    public void disable() {
+        if (enabled == false) return;
+        enabled = false;
+        enabledOption.set(false);
+        JacEventBus.get().unregister(this);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    protected KeyMapping addKeyBinding(String keySuffix, int glfwKey, JacKeyMappingCallback callback) {
+        JacKeyMapping keyBinding = new JacKeyMapping("jac.key." + name + keySuffix, glfwKey, CATEGORY_PREFIX + category);
         if (callback != null) keyBinding.setCallback(callback);
         keyBindings.add(keyBinding);
         return keyBinding;
     }
 
     protected KeyMapping addToggleKeyBinding(int glfwKey) {
-        JacKeyBinding keyBinding = new JacKeyBinding("jac.key." + name + ".toggle", glfwKey, CATEGORY_PREFIX + category);
-        keyBinding.setCallback(()->{
-            if (!keyBinding.repeat()) {
-                toggle();
-            }
-        });
+        JacKeyMapping keyBinding = new JacKeyMapping("jac.key." + name + ".toggle", glfwKey, CATEGORY_PREFIX + category);
+        keyBinding.setCallback(this::toggle);
         keyBindings.add(keyBinding);
         return keyBinding;
     }
 
-    public List<JacKeyBinding> getKeyBindings() {
+    public List<JacKeyMapping> getKeyBindings() {
         return keyBindings;
     }
 
@@ -79,7 +100,7 @@ public abstract class Feature {
         String optionName = FEATURE_PREFIX + this.name + ".option." + name;
         OptionInstance<Boolean> option = OptionInstance.createBoolean(
                 optionName,
-                //SimpleOption.constantTooltip(Text.translatable(optionName + ".tooltip")),
+                //OptionInstance.cachedConstantTooltip(Component.translatable(optionName + ".tooltip")),
                 OptionInstance.noTooltip(),
                 defaultValue
         );
@@ -93,7 +114,7 @@ public abstract class Feature {
         String optionName = FEATURE_PREFIX + this.name + ".option." + name;
         OptionInstance<Integer> option = new OptionInstance<>(
                 optionName,
-                //SimpleOption.constantTooltip(Text.translatable(optionName + ".tooltip")),
+                //OptionInstance.cachedConstantTooltip(Component.translatable(optionName + ".tooltip")),
                 OptionInstance.noTooltip(),
                 (text, integer) -> { return Component.translatable(optionName).append(": " + integer); },
                 new OptionInstance.IntRange(min, max),
@@ -123,7 +144,7 @@ public abstract class Feature {
         String optionName = FEATURE_PREFIX + this.name + ".option." + name;
         OptionInstance<Double> option = new OptionInstance<>(
                 optionName,
-                //SimpleOption.constantTooltip(Text.translatable(optionName + ".tooltip")),
+                //OptionInstance.cachedConstantTooltip(Component.translatable(optionName + ".tooltip")),
                 OptionInstance.noTooltip(),
                 (text, double_) -> { return Component.translatable(optionName).append(": " + double_); },
                 OptionInstance.UnitDouble.INSTANCE.xmap(

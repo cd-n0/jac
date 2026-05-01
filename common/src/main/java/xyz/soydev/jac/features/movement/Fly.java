@@ -8,12 +8,14 @@ import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec3;
+import xyz.soydev.jac.events.JacSubscribe;
+import xyz.soydev.jac.events.TickEvent;
 
 public class Fly extends MovementFeature {
     private final OptionInstance<Double> flySpeedOption;
     private final OptionInstance<Integer> flyAntiKickTickFrequency;
     public Fly() {
-        super(Fly.class.getSimpleName().toLowerCase());
+        super(Fly.class.getSimpleName().toLowerCase(), false);
         flySpeedOption = addDoubleOption("flyspeed", 1, 0, 10);
         flyAntiKickTickFrequency = addIntegerOption("flyantikicktickfrequency", 20, 1, 19);
         addToggleKeyBinding(GLFW.GLFW_KEY_PAGE_UP);
@@ -36,8 +38,8 @@ public class Fly extends MovementFeature {
         }
     }
 
-    @Override
-    protected void onTick() {
+    @JacSubscribe
+    protected void onTick(TickEvent e) {
         LocalPlayer player = instance.player;
         if (player == null) return;
         Options options = instance.options;

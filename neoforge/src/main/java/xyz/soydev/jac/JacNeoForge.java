@@ -23,7 +23,7 @@ public class JacNeoForge {
 
     @SubscribeEvent // on the mod event bus only on the physical client
     public static void registerBindings(RegisterKeyMappingsEvent event) {
-        JacClient.features.getFeatures().forEach(feature ->
+        JacClient.features.forEach(feature ->
                 feature.getKeyBindings().forEach(event::register)
         );
     }

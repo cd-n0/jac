@@ -22,7 +22,7 @@ public class JacOptionsScreen extends OptionsScreen {
     @Override
     protected void init() {
         int i = 0;
-        for (Feature feature : JacClient.features.getFeatures()) {
+        for (Feature feature : JacClient.features) {
             addRenderableWidget(
                     Button.builder(
                             feature.getTitle(),

@@ -2,10 +2,6 @@ package xyz.soydev.jac;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.KeyMapping;
-import xyz.soydev.jac.features.JacKeyBinding;
-
-import java.util.List;
 
 public class JacFabric implements ModInitializer {
     Jac jac = new Jac();
@@ -26,7 +22,7 @@ public class JacFabric implements ModInitializer {
 
 
     public static void registerBindings() {
-        JacClient.features.getFeatures().forEach(feature ->
+        JacClient.features.forEach(feature ->
             feature.getKeyBindings().forEach(KeyBindingHelper::registerKeyBinding)
         );
     }

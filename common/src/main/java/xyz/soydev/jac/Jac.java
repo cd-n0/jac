@@ -3,6 +3,8 @@ package xyz.soydev.jac;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
+
 public class Jac {
     public static final String MOD_ID = "jac";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -13,6 +15,5 @@ public class Jac {
     public void onInitialize() {
         LOGGER.info("JAC initialized!");
         JacClient.onInitializeClient();
-        JacClient.features.init();
     }
 }
